@@ -1,0 +1,57 @@
+1.算法：只有，考察代码的逻辑，模拟
+
+2.数据结构： 首先是队列，
+            为什么？因为这是固定的范围：最先入队的船的时间减去队尾的时间必须小于86400秒，就是移动窗口的问题
+            其次是桶，
+            为什么？因为要批量计算国籍为i的数量
+
+3.代码实现： !!和栈相似，一旦访问了不存在的节点，就会报错，所以一定要特判一下
+
+#include<bits/stdc++.h>
+#define int long long
+
+using namespace std;
+
+int n, t, k;//表示n次询问，船到港的时间，乘客数量 
+int cnt[300005];//用于判断桶是否为空，好对ans操作
+int ans;
+
+struct SHIP{
+	vector<int> nation;//存在的意义：记每一个人，方便后面44行遍历
+	int t;
+};
+
+queue<SHIP> q;//存船 
+
+signed main() {
+	cin >> n;
+	for(int i = 1; i <= n; i++) {
+		SHIP tship;//输入的数据 
+		cin >> tship.t;//输入每个船的入港时间
+		int x;
+		cin >> x;//输入每个船的人数
+		//把每个国际存入cnt 
+		for(int i = 1; i <= x; i++) {
+			int y;
+			cin >> y;
+			tship.nation.push_back(y);
+			if(cnt[y] == 0)
+				ans++;//存入一个多少个不同的国家 
+			cnt[y]++;//统计第i个国家的人数 
+		} 
+		q.push(tship);//把临时的船入队 
+    //判断短路!!! !q.empty()一定要放在q.back().t - q.front().t >= 86400前，否则计算机执行q.back().t - q.front().t >= 86400时会之间报错，短路
+		while(!q.empty()&&q.back().t - q.front().t >= 86400) {//控制队列的区间 
+			//减去首个船的cnt计数桶和ans 
+			for(int x:q.front().nation) {
+				if(cnt[x] == 1)
+					ans--, cnt[x]--;
+				else
+					cnt[x]--;
+			} 
+			q.pop();
+		}
+		cout << ans << '\n';
+	}
+	return 0;
+}
