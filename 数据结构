@@ -12,3 +12,25 @@ vector：
   sort(a.begin(), a.end())
   a.assign(1000, 3)给前1000个数赋值为3，并且在没开空间的情况下补充至1000位
   a.resize(100, x)少了补充，多了扣除，补充为x, 一开始默认为0
+
+栈：
+  后进先出，垃圾桶
+  stack<int> a;
+  a.push(x)放入
+  a.pop()弹出最上面
+  a.top()返回最上面的内容，类型取决于stack的类型
+  a.empty()若为空，返回true,否则返回false
+  a.size()返回栈的长度
+
+队列：
+  queue<int> q;队列的定义
+  多一个a.front()  a.back() 代表队首与队尾，其余与stack相同
+  滑动窗口问题：
+有一个定长的窗口，窗口由左到右，要一直处理窗口内的信息
+
+
+A?B:C
+if(a==true)
+  B;
+else
+  c;
