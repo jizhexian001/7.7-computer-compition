@@ -1,0 +1,64 @@
+线性的结构
+命名：[{(为正,]})为负
+1.先判断算法：这道题是首先是贪心，
+  为什么是贪心呢：因为只有 () 这样是合法的 而 )( 这样是非法的，所以没有办法使用双循环暴力解，而且暴力的解法为O(N^2)的就是10^12，远超1亿的限制
+  怎么贪呢，就是把合法的一正一负并且对应的括号删除，若没有剩下的，就是"YES"否则就是"NO"
+  贪心的证明：因为对与每一个输入的字符串组成，只有3种可能：合法部分与合法部分 或 不合法部分与合法部分 或 不合法，所以只要删除合法部分，再检查剩下的部分合不合法就行
+
+2.其次判断数据结构：代码实现的数据结构使用栈，为什么，因为要找一个负括号与  最近  的正括号进行对应，像}{就是不合法的
+
+3.代码的实现：!!!要注意如果为空栈，会返回乱码，没有意义，使用需要特判一下
+
+#include<bits/stdc++.h>
+#define int long long
+
+using namespace std;
+
+int n;
+
+//判断a,b组合是否合法
+bool check(char a, char b) {
+	if(a == '('&&b == ')')
+		return true;
+	if(a == '['&&b == ']')
+		return true;
+	if(a == '{'&&b == '}')
+		return true;
+	return false;
+}
+
+signed main() {
+	cin >> n;
+	for(int i = 1; i <= n; i++) {
+		string s;//输入的括号字符串
+		cin >> s;
+		int len = s.size();
+		stack<char> c;//对于每次的询问新开的栈
+		bool flag = true;//因为不可以每位i位
+		for(int i = 0; i < len; i++) {
+			if(s[i] == '(' || s[i] == '[' || s[i] == '{')
+				c.push(s[i]);
+			else {
+				if(c.empty())
+					flag = false;
+				 else{
+					if(!check(c.top(), s[i])) {
+						flag = false;
+					}
+					else
+						c.pop();
+				}
+			}
+			
+		}
+		if(!c.empty()) {
+			cout << "NO" << '\n';
+			continue;
+		}
+		if(flag == false)
+			cout << "NO" << '\n';
+		else
+			cout << "YES" << '\n';
+	}
+	return 0;
+}
