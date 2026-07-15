@@ -28,7 +28,13 @@ vector：
   滑动窗口问题：
 有一个定长的窗口，窗口由左到右，要一直处理窗口内的信息
 
+双端对列：
+  a.pop_front()
+  a.push_front()
+  a.pop_back()
+  a.push_back()
 
+链表：使用结构体模拟操作
 
 A?B:C
 if(a==true)
