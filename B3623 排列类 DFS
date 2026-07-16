@@ -1,0 +1,38 @@
+
+#include<bits/stdc++.h>
+#define int long long
+
+using namespace std;
+
+int n,k;
+bool vis[15];//判断是否入队
+int a[15];//输出的队列
+
+void dfs(int stp) {//正在处理第stp个人 
+	if(stp==k){//若stp等于k
+		for(int i=1;i<=k;i++)
+			cout<<a[i]<<' ';
+		cout<<'\n';
+		return;
+	} else {//选人，放入数组 
+		for(int i=1;i<=n;i++){
+			if(vis[i]==false){
+				a[stp+1]=i;
+				！！vis[i]=true;//入队了就标记一下
+				dfs(stp+1);//操作下一位
+
+        //前面操作什么就改回去什么
+				！！vis[i]=false; 
+				a[stp+1]=0;
+			} else {
+				continue;//操作过了就枚举下一位
+			}
+		}
+	}
+}
+
+signed main() {
+	cin >> n >> k;
+	dfs(0);//从第0位开始
+	return 0;
+}
