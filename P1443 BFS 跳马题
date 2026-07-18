@@ -1,1 +1,50 @@
+！！解题之前：BFS的特殊性质：广搜在无权图中一定保证最短路径（层数），就是说题目里的：达某个点最少要走几步
+
+变量：使用n,m表示图的边长，sx,sy表示初始的点(sx,sy)，使用dx,dy手写马的跳跃动作，如x+1,y。。。。结构体存队列队首的x,y;ans记输出的图，下面的nx,ny记马的下一次跳跃跳到ans[nx][ny]上
+
+代码：
+#include<bits/stdc++.h>
+#define int long long
+
+using namespace std;
+
+int n,m,sx,sy;
+int dx[9]={0,-2,-2,-1,1,2,2,1,-1};
+int dy[9]={0,-1,1,2,2,1,-1,-2,-2};
+int ans[405][405];
+struct node{
+	int x,y;
+};
+queue<node> q;
+
+signed main() {
+	cin>>n>>m>>sx>>sy;
+	memset(ans,-1,sizeof(ans));
+	node first;
+	ans[sx][sy]=0;
+	first.x=sx,first.y=sy;
+	q.push(first);
+	while(!q.empty()){
+		node now=q.front();
+		int x=now.x,y=now.y;
+		q.pop();
+		for(int i=1;i<=8;i++){
+			int nx=x+dx[i];
+			int ny=y+dy[i];
+			if(nx>=1&&nx<=n&&ny>=1&&ny<=m&&ans[nx][ny]==-1){
+				ans[nx][ny]=ans[x][y]+1;
+				node tmp;
+				tmp.x=nx,tmp.y=ny;
+				q.push(tmp);
+			}
+		}
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			cout<<ans[i][j]<<' ';
+		}
+		cout<<'\n';
+	}
+	return 0;
+}
 
