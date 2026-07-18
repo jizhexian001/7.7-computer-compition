@@ -1,0 +1,90 @@
+BFS:
+BFS的解法核心思路就是枚举父亲节点的所有子节点，判断是否被访问 以及 一系列的判断，判断成功后再把这些子节点作为父亲节点再重复刚刚的操作，直到队列q的结束
+题目中的遍历图分析出这是 BFS/DFS 
+
+现在来看题目，要求我们把 i 号节点的深度输出，这是的 i 号节点的层数为 deep[i] ，这可以由它的父亲节点的层数 deep[nownode]+1 推出，所以只要循环至最后一层停止(q队列为空)，每一次循环都 deep[nownode]+1 就好了
+
+变量释意：n:有n个节点，deep[i]表示第 i 号节点的深度，vis[i]表示第i号节点是否被访问过，edge数组表示邻接表:edge[i][j] i 号节点的子节点为 edge[i][j]，q队列主要表示的是 q 队列的队首元素
+
+代码：
+#include<bits/stdc++.h>
+#define int long long
+
+using namespace std;
+
+int n,deep[500005]={0,1};
+bool vis[500005];
+vector<int> edge[500005];
+queue<int> q;
+
+signed main() {
+	cin>>n;
+  //读入邻接表
+	for(int i=1;i<n;i++){
+		int u,v;
+		cin>>u>>v;
+		edge[u].push_back(v);
+		edge[v].push_back(u);
+	}
+	vis[1]=true;//第一个入队标记一下
+	q.push(1);//第一个入队
+	while(!q.empty()){
+		int now=q.front();
+		q.pop();//把第一个出队
+		for(int x:edge[now]){//！！枚举每一个属于edge[i]这个节点的子节点
+			if(vis[x]==false){
+			  deep[x]=deep[now]+1;//如果被访问过
+			  vis[x]=true;//标记一下被访问过
+			  q.push(x);//放到队首
+			}
+		}
+	}
+	for(int i=1;i<=n;i++)
+		cout<<deep[i]<<' ';
+	cout<<'\n';
+	return 0;
+}
+
+
+
+DFS
+DFS算法的核心就是递归，枚举到多少结束，没结束的情况下下一位怎么放
+这道题的结束就是枚举完所有节点的子节点，不需要想没结束的情况，计算节点深度的方法和BFS的做法一样： 由它的父亲节点的层数+1 推出
+
+变量的解释：与BFS的一样
+
+代码：
+#include<bits/stdc++.h>
+#define int long long
+
+using namespace std;
+
+int n;
+vector<int> edge[500005];
+int deep[500005];
+
+void dfs(int nownode,int father){
+	deep[nownode]=deep[father]+1;
+	for(int x:edge[nownode]){//遍历每个属于节点 edge[i] 的子节点
+		if(x==father)//！！特判结束情况：若没有其他子节点，它的字节点就是它的父亲节点
+			continue;
+		else
+			dfs(x,nownode);//把现在的节点 nownode 作为下一次操作的父亲节点， 子节点 x 作为下一次操作的节点
+	}
+}
+
+signed main() {
+	cin>>n;
+	for(int i=1;i<n;i++){
+		int u,v;
+		cin>>u>>v;
+		edge[u].push_back(v);
+		edge[v].push_back(u);
+	}
+	deep[1]=1; 
+	dfs(1,0);//1为现在的节点，0为1的父亲节点 
+	for(int i=1;i<=n;i++)
+		cout<<deep[i]<<' ';
+	cout<<'\n';
+	return 0;
+}
