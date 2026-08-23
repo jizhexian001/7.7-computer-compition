@@ -173,3 +173,11 @@ signed main() {
 	cout<<(vis[n][m]==true?"Yes":"No")<<'\n';//若vis[n][m]没有被搜索过，就是false输出"no"否则输出"Yes"
 	return 0;
 }
+
+最短路：
+	i到j
+	folyd算法：
+		通过枚举i和j的中间点k来找：a[i][j]=min(a[i][j],a[i][k]+a[k][j]);
+
+		推理证明：因为i到j之间的点k只有两种情况：被访问和不被访问，
+					而便利的所有情况就是以上 所有k的两种情况
